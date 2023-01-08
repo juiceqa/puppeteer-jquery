@@ -18,10 +18,11 @@ const main = async () => {
         return;
     }
     await pageEx.jQuery('button.go').map((index, element) => { jQuery(element).trigger('click'); })
-    await page.$eval('button.go', (el: Element) => (el as HTMLElement).click()); 
+    await page.$eval('button.go', (el: Element) => (el as HTMLElement).click());
     const r1 = await pageEx.waitForjQuery('pre.response:contains("score")');
     console.log(await r1[0].boundingBox());
-    await page.screenshot({ path: 'testresult.png', fullPage: true })
+    await page.waitForLoadState('networkidle');
+await page.screenshot({ path: 'testresult.png', fullPage: true })
     const result = await pageEx.jQuery('pre.response').text();
     console.log('score is:' + JSON.parse(result).score);
     await page.waitForTimeout(500);

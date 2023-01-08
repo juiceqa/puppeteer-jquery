@@ -7,7 +7,7 @@ This is a port from [puppeteer-JQuery](https://www.npmjs.com/package/puppeteer-j
 This glue code is developed in Typescript, because I like Typescript and it evolves very fast.
 Typescript allows you to use JQuery into your remote browser without conflict, and uses the IDE's code completion as much as possible.
 
-### Integration 
+### Integration
 
 This puppeteer does not expose many of his classes, so to register my extension, I need an instance of `Page` to patch its prototype.
 so there are two ways to setup this jquery:
@@ -103,7 +103,7 @@ Fill your the code in index.ts
 import { setupJQuery, BrowserEx, PageEx } from '..';
 import pc from 'picocolors';
 
-async function run() { 
+async function run() {
     const browser: BrowserEx = await setupJQuery({
         headless: true,
         args: [],
@@ -154,14 +154,14 @@ Fill your the code in index.js
 const { setupJQuery } = require('..');
 const pc = require('picocolors');
 
-async function run() { 
+async function run() {
     const browser = await setupJQuery({
         headless: true,
         args: [],
     });
     const jqPage = await browser.newPage();
     await jqPage.goto('https://github.com/UrielCh/puppeteer-jquery', { waitUntil: 'networkidle' });
-    
+
     const stars = await jqPage.jQuery('#repo-stars-counter-star').text();
     console.log(`my project is only ${pc.yellow(stars)}⭐`);
     const files = await jqPage.jQuery('div[aria-labelledby="files"] > div[role="row"].Box-row')
@@ -207,7 +207,8 @@ const main = async () => {
     await page.goto(page1, { waitUntil: 'domcontentloaded' }); // 'networkidle0'
     const r1 = await pageEx.waitForjQuery('pre.response:contains("score")');
     console.log(await r1[0].boundingBox());
-    await page.screenshot({ path: 'testresult.png', fullPage: true })
+    await page.waitForLoadState('networkidle');
+await page.screenshot({ path: 'testresult.png', fullPage: true })
     const result = await pageEx.jQuery('pre.response').text();
     console.log('score is:' + JSON.parse(result).score);
     await page.waitFor(500);
